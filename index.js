@@ -52,10 +52,26 @@ resetForm = () => {
     dateInput.value = "";
     textarea.value = "";
 }
+// takes in list and element object to be added and returns the updated list
+function customPush(array , element)
+{
+    array[customLength(array)] = element;
+    //console.log(array);
+    return array;
+}
+
+function customLength(array)
+{
+    let count = 0;
+    for (let key in array)
+        count++;
+
+    return count;
+}
 
 // Function to fetch the data from input fields and store it in taskData array
 addTask = () => {
-    taskData.push (
+    taskData = customPush ( taskData ,
         {   
             title: titleInput.value,
             date: dateInput.value,
@@ -145,9 +161,10 @@ editTask = (element, index) => {
     add.innerText = "Save"
   };
 
-  // Retrieve taskData from localStorage on page load
+// Retrieve taskData from localStorage on page load (persistent data)
 const savedData = localStorage.getItem("taskData");
 if (savedData) {
   taskData = JSON.parse(savedData);
   displayTask();
 }
+
