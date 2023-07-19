@@ -39,7 +39,7 @@ body {
     grid-template-columns: 1fr;
     gap: 14px;
     overflow-y: auto;
-    height: 300px;
+    height: 100px;
 }
   
 #tasks div {
