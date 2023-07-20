@@ -75,7 +75,8 @@ addTask = () => {
         {   
             title: titleInput.value,
             date: dateInput.value,
-            description: textarea.value
+            description: textarea.value,
+            status: "Pending"
         }
     );
     // now convert the data into string using JSON.stringify
@@ -95,7 +96,7 @@ updateTask = (e) => {
     taskData[index] = {
     title: titleInput.value,
     date: dateInput.value,
-    description: textarea.value,
+    description: textarea.value
     };
 
     // Update the data in localStorage
@@ -119,14 +120,16 @@ displayTask = () => {
     tasks.innerHTML = "";
     // Display each task in the taskData array using forEach loop and provide Edit and Delete options for each task
     taskData.forEach((task, index) => {
+        const statusLabel = task.status == "Completed" ? '<span class="status-label completed">Completed</span>' : '<span class="status-label pending">Pending</span>';
         tasks.innerHTML += `
         <div id=${index}>
-            <span>${task.title}</span>
+            <span>${task.title}  ${statusLabel}</span>
             <span class="small text-secondary">${task.date}</span>
             <p>${task.description}</p>
             <span class="options">
-            <i data-bs-toggle="modal" data-bs-target="#form" class="fas fa-edit" onclick = "editTask(this , ${index})"></i>
-            <i onclick = "deleteTask(this)" class="fas fa-trash-alt"></i>
+                <i class="fas fa-check-square" onclick="completeTask(${index})"></i>
+                <i data-bs-toggle="modal" data-bs-target="#form" class="fas fa-edit" onclick = "editTask(this , ${index})"></i>
+                <i onclick = "deleteTask(this)" class="fas fa-trash-alt"></i>
             </span>
         </div>
         `;
@@ -161,6 +164,17 @@ editTask = (element, index) => {
     add.innerText = "Save"
   };
 
+
+completeTask = (index) => {
+    // Change the status of the task to Completed
+    taskData[index].status = "Completed";
+
+    // Save the updated entry in localStorage
+    localStorage.setItem("taskData", JSON.stringify(taskData));
+    console.log(taskData);
+    displayTask();
+
+}
 // Retrieve taskData from localStorage on page load (persistent data)
 const savedData = localStorage.getItem("taskData");
 if (savedData) {

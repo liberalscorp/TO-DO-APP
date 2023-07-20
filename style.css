@@ -61,3 +61,21 @@ body {
     cursor: pointer;
   }
     
+.status-label {
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: right;
+}
+
+.completed {
+    background-color: #4caf50;
+    color: #ffffff;
+}
+
+.pending {
+    background-color: #ff9800;
+    color: #ffffff;
+}
