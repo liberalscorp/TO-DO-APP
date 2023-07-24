@@ -79,3 +79,11 @@ body {
     background-color: #ff9800;
     color: #ffffff;
 }
+
+.fa-check-square{
+    color:green;
+}
+
+.fa-times-circle{
+    color:red;
+}

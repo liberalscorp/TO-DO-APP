@@ -8,13 +8,40 @@ let textarea = document.getElementById("textarea");
 let msg = document.getElementById("msg");
 let tasks = document.getElementById("tasks");
 let add = document.getElementById("add");
-
+let deleteAll = document.getElementById("deleteAllBtn");
 // Variable to toggle between Edit and Add 
 let editFlag = false;
+// List required to store the task data
+let taskData = [];
+
 
 // Validate the form to check if it is empty or not
 
 form.addEventListener("submit", (e) => {
+    if (customLength(taskData)>= 1)
+    {
+        // show DeleteAll div
+        deleteAll.removeAttribute("hidden");
+        const deleteAllIcon = document.createElement("i");
+        deleteAllIcon.classList.add('fas' , 'fa-trash-alt');
+        deleteAll.prepend(deleteAllIcon);
+
+        // make event listener for deleteAll
+        deleteIcon = document.querySelector(".fa-trash-alt");
+        deleteIcon.addEventListener("click" , () => {
+            // delete all the tasks
+            tasks.innerHTML = "";
+            // remove all the tasks from the array
+            taskData.splice(0, customLength(taskData));
+            // stringify the updated array
+            localStorage.setItem("taskData", JSON.stringify(taskData));
+            // hide the deleteAll div
+            deleteAll.setAttribute("hidden" , "true");
+        })
+
+
+    }
+
     e.preventDefault();
     if (titleInput.value == "" || dateInput.value == "" ) {
         
@@ -40,11 +67,12 @@ form.addEventListener("submit", (e) => {
         modal.hide();
         msg.innerHTML = "";
     }
+    
+    
+        
 
 })
 
-// List required to store the task data
-let taskData = [];
 
 // Function to reset the form after submitting the data
 resetForm = () => {
@@ -119,6 +147,9 @@ updateTask = (e) => {
 displayTask = () => {   
     tasks.innerHTML = "";
     // Display each task in the taskData array using forEach loop and provide Edit and Delete options for each task
+    taskData.sort((a,b)=> {
+        return new Date(b.date) - new Date(a.date);
+    })
     taskData.forEach((task, index) => {
         const statusLabel = task.status == "Completed" ? '<span class="status-label completed">Completed</span>' : '<span class="status-label pending">Pending</span>';
         tasks.innerHTML += `
