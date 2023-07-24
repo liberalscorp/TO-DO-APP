@@ -128,6 +128,7 @@ displayTask = () => {
             <p>${task.description}</p>
             <span class="options">
                 <i class="fas fa-check-square" onclick="completeTask(${index})"></i>
+                <i class="fas fa-times-circle" onclick="completeTask(${index})"></i>
                 <i data-bs-toggle="modal" data-bs-target="#form" class="fas fa-edit" onclick = "editTask(this , ${index})"></i>
                 <i onclick = "deleteTask(this)" class="fas fa-trash-alt"></i>
             </span>
@@ -167,7 +168,11 @@ editTask = (element, index) => {
 
 completeTask = (index) => {
     // Change the status of the task to Completed
-    taskData[index].status = "Completed";
+    if (taskData[index].status == "Completed"){
+        taskData[index].status = "Pending";
+        
+    }else
+        taskData[index].status = "Completed";
 
     // Save the updated entry in localStorage
     localStorage.setItem("taskData", JSON.stringify(taskData));
