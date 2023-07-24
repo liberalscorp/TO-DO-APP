@@ -14,18 +14,12 @@ let editFlag = false;
 // List required to store the task data
 let taskData = [];
 
-
-// Validate the form to check if it is empty or not
-
-form.addEventListener("submit", (e) => {
-    if (customLength(taskData)>= 1)
+// Function to show deleteAll div
+showDeleteAll = () => {
+    if (customLength(taskData)> 1)
     {
         // show DeleteAll div
         deleteAll.removeAttribute("hidden");
-        const deleteAllIcon = document.createElement("i");
-        deleteAllIcon.classList.add('fas' , 'fa-trash-alt');
-        deleteAll.prepend(deleteAllIcon);
-
         // make event listener for deleteAll
         deleteIcon = document.querySelector(".fa-trash-alt");
         deleteIcon.addEventListener("click" , () => {
@@ -38,10 +32,20 @@ form.addEventListener("submit", (e) => {
             // hide the deleteAll div
             deleteAll.setAttribute("hidden" , "true");
         })
-
-
+    }
+    else
+    {
+        // hide DeleteAll div
+        deleteAll.setAttribute("hidden" , "true");
     }
 
+}
+
+// Validate the form to check if it is empty or not
+
+form.addEventListener("submit", (e) => {
+    
+   
     e.preventDefault();
     if (titleInput.value == "" || dateInput.value == "" ) {
         
@@ -68,7 +72,7 @@ form.addEventListener("submit", (e) => {
         msg.innerHTML = "";
     }
     
-    
+    showDeleteAll();
         
 
 })
@@ -158,9 +162,8 @@ displayTask = () => {
             <span class="small text-secondary">${task.date}</span>
             <p>${task.description}</p>
             <span class="options">
-                <i class="fas fa-check-square" onclick="completeTask(${index})"></i>
-                <i class="fas fa-times-circle" onclick="completeTask(${index})"></i>
-                <i data-bs-toggle="modal" data-bs-target="#form" class="fas fa-edit" onclick = "editTask(this , ${index})"></i>
+                <i class="fas fa-clipboard-list" onclick="completeTask(${index})"></i>
+               <i data-bs-toggle="modal" data-bs-target="#form" class="fas fa-edit" onclick = "editTask(this , ${index})"></i>
                 <i onclick = "deleteTask(this)" class="fas fa-trash-alt"></i>
             </span>
         </div>
@@ -179,6 +182,7 @@ deleteTask = (e) => {
     localStorage.setItem("taskData", JSON.stringify(taskData));
   
     console.log(taskData);
+    showDeleteAll();
   };
   
 // function to edit the task
