@@ -128,13 +128,19 @@ function customLength(array)
 
     return count;
 }
+// format the date
+function formatDate(date) {
+    const [year, month, day] = date.split("-");
+
+    return [day, month, year].join("-");
+}
 
 // Function to fetch the data from input fields and store it in taskData array
 addTask = () => {
     taskData = customPush ( taskData ,
         {   
             title: titleInput.value,
-            date: dateInput.value,
+            date: formatDate(dateInput.value),
             description: textarea.value,
             status: "Pending"
         }
@@ -155,7 +161,7 @@ updateTask = (e) => {
     // Update the task in the taskData array
     taskData[index] = {
     title: titleInput.value,
-    date: dateInput.value,
+    date: formatDate(dateInput.value),
     description: textarea.value
     };
 
@@ -263,24 +269,30 @@ function PerformSearch() {
     let taskToSearch = document.getElementById("searchInput");
     taskToSearch = taskToSearch.value.toLowerCase();
 
+    let searchedindex ;
     
     const found = taskData.find((searchkey)=>{
         searchkey.title = searchkey.title.toLowerCase();
         searchkey.description = searchkey.description.toLowerCase();
+        searchedindex == taskData.indexOf(searchkey)
         
         return (
-            searchkey.title === taskToSearch ||
+            (searchkey.title === taskToSearch ||
             searchkey.description === taskToSearch ||
-            searchkey.date === taskToSearch
+            searchkey.date === taskToSearch ) 
+            
         )
     })
     
     if (found)
-        console.log("Found")
+    {
+        console.log(found);
+    }
+        
     else
         console.log("Not Found")
 
-    
+    displayTask();
 }
 
 searchBtn.addEventListener("click", PerformSearch);
