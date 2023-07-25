@@ -107,4 +107,6 @@ body {
     justify-content: space-between;
   }
   
-  
+  #searchInput::placeholder {
+    color: black;
+  }

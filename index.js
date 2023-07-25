@@ -269,28 +269,35 @@ function PerformSearch() {
     let taskToSearch = document.getElementById("searchInput");
     taskToSearch = taskToSearch.value.toLowerCase();
 
-    let searchedindex ;
-    
-    const found = taskData.find((searchkey)=>{
-        searchkey.title = searchkey.title.toLowerCase();
-        searchkey.description = searchkey.description.toLowerCase();
-        searchedindex == taskData.indexOf(searchkey)
-        
-        return (
-            (searchkey.title === taskToSearch ||
-            searchkey.description === taskToSearch ||
-            searchkey.date === taskToSearch ) 
+    if (!taskToSearch == ""){
+        const found = taskData.find((searchkey)=>{
+            searchkey.title = searchkey.title.toLowerCase();
+            searchkey.description = searchkey.description.toLowerCase();
             
-        )
-    })
+            return (
+                (searchkey.title === taskToSearch ||
+                searchkey.description === taskToSearch ||
+                searchkey.date === taskToSearch ) 
+                
+            )
+        })
+
+        if (found)
+        {
+            console.log(found);
+            alert("Title:  " + found.title + "\n" + "Due Date:  " + found.date + "\n" + "Description:  " + found.description)
+        }
+                
+        else
+        {
+            console.log("Not Found")
+            alert("Not Found.")
+        }
     
-    if (found)
-    {
-        console.log(found);
     }
-        
     else
-        console.log("Not Found")
+        alert("Please enter something to search !!!!!");    
+    searchInput.value = "";
 
     displayTask();
 }
