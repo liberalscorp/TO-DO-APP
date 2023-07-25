@@ -87,3 +87,23 @@ body {
 .fa-times-circle{
     color:red;
 }
+
+#deleteAllBtn {
+    text-align: right;
+    color: red;
+    border: none;
+}
+
+#deletebtn button {
+    background-color: red;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+  }
+  

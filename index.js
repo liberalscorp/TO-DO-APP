@@ -21,8 +21,8 @@ showDeleteAll = () => {
         // show DeleteAll div
         deleteAll.removeAttribute("hidden");
         // make event listener for deleteAll
-        deleteIcon = document.querySelector(".fa-trash-alt");
-        deleteIcon.addEventListener("click" , () => {
+        deleteBtn = document.querySelector("#deletebtn");
+        deletebtn.addEventListener("click" , () => {
             // delete all the tasks
             tasks.innerHTML = "";
             // remove all the tasks from the array
@@ -40,31 +40,59 @@ showDeleteAll = () => {
     }
 
 }
+//Validate the date
+validateDate = () => {  
+    var currentDate = new Date();
+    var taskDate = new Date(dateInput.value);
+    currentDate.setHours(0,0,0,0);
+    taskDate.setHours(0,0,0,0);
+    if (taskDate < currentDate){
+        dateInput.value = "";
+        return true;
+    }
+    return false;
+}
 
 // Validate the form to check if it is empty or not
 
 form.addEventListener("submit", (e) => {
     
-   
+    
     e.preventDefault();
+    var wrongDate = validateDate()
     if (titleInput.value == "" || dateInput.value == "" ) {
         
-        msg.innerHTML = "Please fill the required fields.";
-        msg.style.color = "red";
+        if (!wrongDate)
+        {
+            msg.innerHTML = "Note: Please fill the required fields.";
+            msg.style.color = "black";
+    
+        }
+        else
+        {
+            msg.innerHTML = "Note: Enter today's date or any later date.";
+            msg.style.color = "black";
+        }
+       
+        
         
     } else {
         if (editFlag == false )
         {
+            
             addTask();
             msg.innerHTML = "Task added successfully.";
             msg.style.color = "green";
+            
         }
         else
         {
             updateTask(e);
             msg.innerHTML = "Task updated successfully.";
             msg.style.color = "#A2FF86";
+            
         }
+                
         
         // Exit the form after submitting the data 
         const modal = bootstrap.Modal.getInstance(form);
@@ -152,7 +180,7 @@ displayTask = () => {
     tasks.innerHTML = "";
     // Display each task in the taskData array using forEach loop and provide Edit and Delete options for each task
     taskData.sort((a,b)=> {
-        return new Date(b.date) - new Date(a.date);
+        return new Date(a.date) - new Date(b.date);
     })
     taskData.forEach((task, index) => {
         const statusLabel = task.status == "Completed" ? '<span class="status-label completed">Completed</span>' : '<span class="status-label pending">Pending</span>';
@@ -175,14 +203,18 @@ displayTask = () => {
 
 // Function to delete the task
 deleteTask = (e) => {
-    e.parentElement.parentElement.remove();
-    // remove that task from the array
-    taskData.splice(e.parentElement.parentElement.id, 1);
-    // stringify the updated array
-    localStorage.setItem("taskData", JSON.stringify(taskData));
-  
-    console.log(taskData);
-    showDeleteAll();
+    if (confirm("Are you sure you want to delete this task?")){
+
+        
+        e.parentElement.parentElement.remove();
+        // remove that task from the array
+        taskData.splice(e.parentElement.parentElement.id, 1);
+        // stringify the updated array
+        localStorage.setItem("taskData", JSON.stringify(taskData));
+    
+        console.log(taskData);
+        showDeleteAll();
+    }
   };
   
 // function to edit the task
@@ -220,5 +252,39 @@ const savedData = localStorage.getItem("taskData");
 if (savedData) {
   taskData = JSON.parse(savedData);
   displayTask();
+  showDeleteAll();
 }
 
+// Search functionality
+
+let search = document.getElementById("search");
+
+function PerformSearch() {
+    let taskToSearch = document.getElementById("searchInput");
+    taskToSearch = taskToSearch.value.toLowerCase();
+
+    
+    const found = taskData.find((searchkey)=>{
+        searchkey.title = searchkey.title.toLowerCase();
+        searchkey.description = searchkey.description.toLowerCase();
+        
+        return (
+            searchkey.title === taskToSearch ||
+            searchkey.description === taskToSearch ||
+            searchkey.date === taskToSearch
+        )
+    })
+    
+    if (found)
+        console.log("Found")
+    else
+        console.log("Not Found")
+
+    
+}
+
+searchBtn.addEventListener("click", PerformSearch);
+searchInput.addEventListener("keypress", (e)=>{
+    if (e.key == "Enter")
+        PerformSearch();
+});

@@ -58,10 +58,20 @@
         </form>
 
         <h4 class="text-center my-3"><U>TASKS TO DO </U></h4>
-        <div hidden id="deleteAllBtn" style="text-align: right; color:red"> 
-            <i class="fas fa-trash-alt"> </i> Delete All
+        <div class="container">
+
+            <div id="search">
+                <input type="text" id="searchInput" placeholder="Search for a task..." style="background-color: #4F709C;"/>
+                <button id="searchBtn" style="background-color: #4F709C;"> <i class="fas fa-search"> </i> </button>
+            </div>
+
+            <div hidden id="deleteAllBtn"> 
+                <button id="deletebtn" style="background-color: red;"> <i class="fas fa-trash-alt"> </i> Delete All </button>
+            </div>   
+
         </div>
-        <div id="tasks"></div>
+
+        <div style="padding-top: 10px;"id="tasks"></div>
         
     </div>
 
